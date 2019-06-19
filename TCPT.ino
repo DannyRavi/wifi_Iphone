@@ -7,12 +7,12 @@
 */
  
 #include <ESP8266WiFi.h>
- 
+#include "RTPPacket.h"
 #define SendKey 0  //Button to send data Flash BTN on NodeMCU
  
 int port = 8888;  //Port number
 WiFiServer server(port);
- 
+uint8_t buff[50];
 //Server connect to WiFi Network
 const char *ssid = "MobinNet0ECA";  //Enter your wifi SSID
 const char *password = "EFFE0ECA";  //Enter your wifi Password
@@ -71,11 +71,15 @@ void loop()
         Serial.write(client.read()); 
       }
       //Send Data to connected client
-      while(Serial.available()>0)
-      {
-
-        client.write(Serial.read());
-      }
+      //// while(Serial.available()>0)
+      //// {
+        int sensorValue = analogRead(A0);
+        int numberChar = 5;
+       //// client.write((int)sensorValue);
+      //! RTPPacket((uint8_t *)"Hello", 0, 0).serialize(buff);
+      //! client.write(buff,50);
+      client.write(numberChar);
+      //// }
     }
     client.stop();
     Serial.println("Client disconnected");    
