@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2018, circuits4you.com
  * All rights reserved.
@@ -7,9 +6,13 @@
 */
  
 #include <ESP8266WiFi.h>
-#include "RTPPacket.h"
+#include <SoftwareSerial.h>
+//#include "RTPPacket.h"
 #define SendKey 0  //Button to send data Flash BTN on NodeMCU
- 
+#define SOFT_SERIAL_SPEED 115200  //should be match to target device
+
+SoftwareSerial ss(D6,D5); // D6=rx , D5=tx
+
 int port = 8888;  //Port number
 WiFiServer server(port);
 uint8_t buff[50];
@@ -18,6 +21,7 @@ const char *ssid = "MobinNet0ECA";  //Enter your wifi SSID
 const char *password = "EFFE0ECA";  //Enter your wifi Password
  
 int count=0;
+int data_soft_serial;
 //=======================================================================
 //                    Power on setup
 //=======================================================================
@@ -49,6 +53,12 @@ void setup()
   Serial.print(WiFi.localIP());
   Serial.print(" on port ");
   Serial.println(port);
+
+
+  ss.begin(SOFT_SERIAL_SPEED);    //soft Serial Setup _ should be the same as target device
+  
+
+
 }
 //=======================================================================
 //                    Loop
